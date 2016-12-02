@@ -1,0 +1,19 @@
+package methods
+
+import (
+	"access_api"
+	"encoding/json"
+	"fmt"
+	"time"
+)
+
+type RestApiClient struct {
+	*access_api.RestApiClient
+}
+
+func Login(restUrl, login, pass string) (*RestApiClient, error, time.Duration) {
+	client, err, d := access_api.Login(restUrl, login, pass)
+	return &RestApiClient{client,}, err, d
+}
+
+

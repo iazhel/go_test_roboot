@@ -1,0 +1,133 @@
+// API GET all {{.ApiCall}}  
+{{if not .GetRejected}}
+func (self *RestApiClient) {{.GetMethod}}()(*{{.WideType}}, error, time.Duration){
+    out := &{{.WideType}}{}
+	bodies, err, d := self.GetAll({{.GoApiCallName}} + "/?format=json" )
+	if err != nil {
+		return out, err, d
+	}
+    for _, body := range bodies{
+        gotSt := &{{.WideType}}{}
+    	err = json.Unmarshal(body, gotSt)
+    	if err != nil {
+    		return out, err, d
+    	}
+        out.Count = gotSt.Count
+        out.{{.ExampleName}} = append(out.{{.ExampleName}}, gotSt.{{.ExampleName}}...)
+    }
+	return out, nil, d
+}
+{{- end}}
+{{if not .GetOneRejected}}
+// API GET one {{.ApiCall}}  
+func (self *RestApiClient) {{.GetOneMethod}}(id int) (*{{.OneGetType}}, error,  time.Duration){
+	gotSt := &{{.OneGetType}}{}
+	body, err, d := self.Get({{.GoApiCallName}} + fmt.Sprintf("%d/", id) + "/?format=json")
+	if err != nil {
+		return gotSt, err, d
+	}
+	err = json.Unmarshal(body, gotSt)
+	if err != nil {
+		return gotSt, err, d
+	}
+	return gotSt, nil, d
+}
+{{- end}}
+
+{{if not .PostRejected}}
+// API POST {{.ApiCall}}
+func (self *RestApiClient) {{.PostMethod}}(postSt *{{.ExampleType}}) (*{{.ExampleType}}, error, time.Duration) {
+	gotSt := &{{.ExampleType}}{}
+	b, err := json.Marshal(postSt)
+	if err != nil {
+		return nil, err, 0
+	}
+	body, status, err, d := self.Post({{.GoApiCallName}}, b)
+	if err != nil {
+		return gotSt, err, d
+	}
+	// get a new structure
+    if status == 201 {
+    	err = json.Unmarshal(body, gotSt)
+    	if err != nil {
+    		return gotSt, err, d
+    	}
+    }
+	return gotSt, nil, d
+}
+{{- end}}
+
+{{if not .PatchRejected}}
+// API PATCH {{.ApiCall}}
+func (self *RestApiClient) {{.PatchMethod}}(id int, postSt *{{.ExampleType}}) (*{{.ExampleType}}, error, time.Duration) {
+	gotSt := &{{.ExampleType}}{}
+	b, err := json.Marshal(postSt)
+	if err != nil {
+		return nil, err, 0
+	}
+	body, status, err, d := self.Patch({{.GoApiCallName}}+fmt.Sprintf("%d/", id), b)
+	if err != nil {
+		return gotSt, err, d
+	}
+    if status == 201 {
+    	err = json.Unmarshal(body, gotSt)
+    	if err != nil {
+    		return gotSt, err, d
+    	}
+    }
+	return gotSt, nil, d
+}
+{{- end}}
+{{if not .PutRejected}}
+// API PUT {{.ApiCall}}
+func (self *RestApiClient) {{.PutMethod}}(id int, isPut *{{.ExampleType}}) (*{{.ExampleType}}, error, time.Duration) {
+	gotSt := &{{.ExampleType}}{}
+	b, err := json.Marshal(isPut)
+	if err != nil {
+		return nil, err, 0
+	}
+	body, status, err, d := self.Put({{.GoApiCallName}}+fmt.Sprintf("%d/", id), b)
+	if err != nil {
+		return gotSt, err, d
+	}
+    if status == 201 {
+    	err = json.Unmarshal(body, gotSt)
+    	if err != nil {
+    		return gotSt, err, d
+    	}
+    }
+	return gotSt, nil, d
+}
+{{- end}}
+{{if not .HeadRejected}}
+// API HEAD {{.ApiCall}}  
+func (self *RestApiClient) {{.HeadMethod}}() ([]byte, error,  time.Duration){
+	body, err, d := self.Head({{.GoApiCallName}})
+	if err != nil {
+		return body, err, d
+	}
+	return body, nil, d
+    
+}
+{{- end}}
+{{if not .OptionRejected}}
+// API OPTION {{.ApiCall}}  
+func (self *RestApiClient) {{.OptMethod}}() ([]byte, error,  time.Duration){
+	body, err, d := self.Options({{.GoApiCallName}})
+	if err != nil {
+		return body, err, d
+	}
+	return body, nil, d
+}
+{{- end}}
+{{if not .DelRejected}}
+// API DELETE {{.ApiCall}}
+func (self *RestApiClient) {{.DelMethod}}(id int) (error, time.Duration){
+	err, d := self.doDelRequest({{.GoApiCallName}} + fmt.Sprintf("%d/", id))
+	if err != nil {
+		return err, d
+	}
+	return nil, d
+}
+{{- end}}
+

@@ -1,0 +1,129 @@
+Login    http://epd-dev.devicepros.net:8010/api-token-auth/        68.395674ms
+GET    http://epd-dev.devicepros.net:8010/audit_history/view/?format=json        73.139791ms
+GET    http://epd-dev.devicepros.net:8010/choices/block_size/?format=json        47.421867ms
+GET    http://epd-dev.devicepros.net:8010/choices/capacity/?format=json        50.982833ms
+GET    http://epd-dev.devicepros.net:8010/choices/life_cycle/?format=json        45.166894ms
+GET    http://epd-dev.devicepros.net:8010/choices/port/?format=json        46.310993ms
+GET    http://epd-dev.devicepros.net:8010/choices/test_duration_type/?format=json        46.873562ms
+GET    http://epd-dev.devicepros.net:8010/choices/test_purpose/?format=json        47.330139ms
+GET    http://epd-dev.devicepros.net:8010/dashboard/?format=json        65.814602ms
+GET    http://epd-dev.devicepros.net:8010/dashboard/notifications/?format=json        47.12717ms
+GET    http://epd-dev.devicepros.net:8010/export_help_file/upload/?format=json        31.726795ms
+StatusCode: 500
+Error: nil
+Body: {"detail":"ProgrammingError: relation \"tbl_test_tool_config\" does not exist\nLINE 10: ...elect 5, 'Test Tool Config', array_agg(name) from tbl_test_t...\n                                                              ^\nQUERY:  (\nselect 1 as id, 'Test Launcher' source, array_agg(name) choices from tbl_test_launcher\nunion\nselect 2, 'Test Tool name', array_agg(name) from tbl_test_tool\nunion\nselect 3, 'Test Tool revision', array_agg(revision) from tbl_test_tool\nunion\nselect 4, 'Operating System', array_agg(name) from tbl_operating_system\nunion\nselect 5, 'Test Tool Config', array_agg(name) from tbl_test_tool_config\n\n)\nCONTEXT:  PL/pgSQL function sp_export_help() line 3 at RETURN QUERY\n"}
+GET    http://epd-dev.devicepros.net:8010/import_file/upload/?format=json        36.969865ms
+StatusCode: 405
+Error: nil
+Body: {"detail":"Method \"GET\" not allowed."}
+GET    http://epd-dev.devicepros.net:8010/key_for_calls/view/?format=json        34.270702ms
+GET    http://epd-dev.devicepros.net:8010/roles/?format=json        34.797931ms
+GET    http://epd-dev.devicepros.net:8010/settings/env/?format=json        27.154908ms
+GET    http://epd-dev.devicepros.net:8010/subscription/group/view/?format=json        46.311606ms
+StatusCode: 500
+Error: nil
+Body: {"detail":"TypeError: Related Field got invalid lookup: icontains"}
+GET    http://epd-dev.devicepros.net:8010/subscription/user/view/?format=json        72.055081ms
+GET    http://epd-dev.devicepros.net:8010/tct_detail/view/?format=json        244.491239ms
+GET    http://epd-dev.devicepros.net:8010/test_case/categories/?format=json        37.908633ms
+GET    http://epd-dev.devicepros.net:8010/test_case/view/?format=json        363.913834ms
+GET    http://epd-dev.devicepros.net:8010/test_cycle/report/?format=json        94.296529ms
+GET    http://epd-dev.devicepros.net:8010/test_cycle/view/?format=json        380.544537ms
+GET    http://epd-dev.devicepros.net:8010/test_cycle_template/view/?format=json        108.082865ms
+GET    http://epd-dev.devicepros.net:8010/test_group/view/?format=json        106.29887ms
+GET    http://epd-dev.devicepros.net:8010/test_launcher/library/?format=json        88.045788ms
+GET    http://epd-dev.devicepros.net:8010/test_launcher/library_dependency/?format=json        65.327849ms
+GET    http://epd-dev.devicepros.net:8010/test_launcher/test_peripheral_dependency/?format=json        52.832631ms
+GET    http://epd-dev.devicepros.net:8010/test_launcher/test_peripheral_type/?format=json        64.848284ms
+GET    http://epd-dev.devicepros.net:8010/test_launcher/test_tool/?format=json        145.598923ms
+GET    http://epd-dev.devicepros.net:8010/test_launcher/tool_dependency/?format=json        342.860262ms
+StatusCode: 404
+Error: invalid character '<' looking for beginning of value
+Body: 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>Page not found at /test_launcher/tool_dependency/</title>
+  <meta name="robots" content="NONE,NOARCHIVE">
+  <style type="text/css">
+    html * { padding:0; margin:0; }
+    body * { padding:10px 20px; }
+    body * * { padding:0; }
+    body { font:small sans-serif; background:#eee; }
+    body>div { border-bottom:1px solid #ddd; }
+    h1 { font-weight:normal; margin-bottom:.4em; }...
+GET    http://epd-dev.devicepros.net:8010/test_launcher/view/?format=json        252.022596ms
+GET    http://epd-dev.devicepros.net:8010/test_plan/view/?format=json        248.919408ms
+GET    http://epd-dev.devicepros.net:8010/test_project/view/?format=json        283.261649ms
+GET    http://epd-dev.devicepros.net:8010/test_result/choices/status/?format=json        38.609318ms
+GET    http://epd-dev.devicepros.net:8010/test_result/comment_tag/view/?format=json        54.73658ms
+GET    http://epd-dev.devicepros.net:8010/test_result/fio_test_result/view/?format=json        95.730726ms
+GET    http://epd-dev.devicepros.net:8010/test_result/iometer_test_report/view/?format=json        28.180366ms
+GET    http://epd-dev.devicepros.net:8010/test_result/iometer_test_result/view/?format=json        77.791029ms
+GET    http://epd-dev.devicepros.net:8010/test_result/log/?format=json        274.83805ms
+GET    http://epd-dev.devicepros.net:8010/test_result/report_template/view/?format=json        127.897909ms
+GET    http://epd-dev.devicepros.net:8010/test_result/test_run_result_comment/view/?format=json        223.495606ms
+GET    http://epd-dev.devicepros.net:8010/test_result/view/?format=json        138.260433ms
+GET    http://epd-dev.devicepros.net:8010/test_run/duplicate/?format=json        33.498377ms
+StatusCode: 405
+Error: nil
+Body: {"detail":"Method \"GET\" not allowed."}
+GET    http://epd-dev.devicepros.net:8010/test_run/view/?format=json        268.707488ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/data_scope/?format=json        38.918841ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/device_under_testing_backend/?format=json        28.750723ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/device_under_testing_capacity/?format=json        33.844863ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/device_under_testing_customer/?format=json        43.358148ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/device_under_testing_form_factor/?format=json        29.672802ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/device_under_testing_frontend/?format=json        33.505815ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/device_under_testing_health_status/?format=json        34.628338ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/device_under_testing_host_interface/?format=json        26.669668ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/device_under_testing_product/?format=json        30.784676ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/device_under_testing_status/?format=json        32.382328ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/download_type/?format=json        39.491672ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/firmware_type/?format=json        28.943878ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/nand_type/?format=json        35.330586ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/nand_version/?format=json        35.243134ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/operating_system/?format=json        53.996119ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/over_provisioning/?format=json        39.974762ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/port/?format=json        26.013458ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/raid/?format=json        26.684405ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/result/?format=json        32.391278ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/security/?format=json        34.187537ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/speed/?format=json        33.718021ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/status/?format=json        34.710741ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/storage_interface_form_factor/?format=json        31.567076ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/test_project_status/?format=json        34.669978ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/test_run_priority_status/?format=json        38.838213ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/test_run_result/?format=json        39.090983ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/test_tool_type/?format=json        37.963034ms
+GET    http://epd-dev.devicepros.net:8010/test_system/choices/test_type/?format=json        28.072013ms
+GET    http://epd-dev.devicepros.net:8010/test_system/controller/?format=json        99.093697ms
+GET    http://epd-dev.devicepros.net:8010/test_system/device_under_testing/?format=json        121.252706ms
+GET    http://epd-dev.devicepros.net:8010/test_system/firmware/?format=json        187.016994ms
+GET    http://epd-dev.devicepros.net:8010/test_system/node/?format=json        62.512633ms
+GET    http://epd-dev.devicepros.net:8010/test_system/operating_system/?format=json        148.233383ms
+GET    http://epd-dev.devicepros.net:8010/test_system/product/?format=json        96.517551ms
+GET    http://epd-dev.devicepros.net:8010/test_system/product_family/?format=json        95.94077ms
+GET    http://epd-dev.devicepros.net:8010/test_system/product_link/?format=json        154.330606ms
+GET    http://epd-dev.devicepros.net:8010/test_system/qual_plan/?format=json        115.438941ms
+GET    http://epd-dev.devicepros.net:8010/test_system/storage_driver/?format=json        87.611299ms
+GET    http://epd-dev.devicepros.net:8010/test_system/storage_interface/?format=json        81.687782ms
+GET    http://epd-dev.devicepros.net:8010/test_system/storage_interface_type/?format=json        32.708901ms
+GET    http://epd-dev.devicepros.net:8010/test_system/test_peripheral/?format=json        76.157777ms
+GET    http://epd-dev.devicepros.net:8010/test_system/test_request/?format=json        210.031818ms
+GET    http://epd-dev.devicepros.net:8010/test_system/test_request_detail/?format=json        88.901941ms
+GET    http://epd-dev.devicepros.net:8010/test_system/view/?format=json        266.147867ms
+GET    http://epd-dev.devicepros.net:8010/trigger_event_choices/?format=json        42.771566ms
+GET    http://epd-dev.devicepros.net:8010/usage_stats/?format=json        11.631321204s
+GET    http://epd-dev.devicepros.net:8010/user_group/?format=json        143.985932ms
+GET    http://epd-dev.devicepros.net:8010/user_settings/?format=json        39.244688ms
+GET    http://epd-dev.devicepros.net:8010/user_upload/view/?format=json        66.028885ms
+GET    http://epd-dev.devicepros.net:8010/user_upload/view_type/?format=json        36.165089ms
+GET    http://epd-dev.devicepros.net:8010/users/?format=json        92.724916ms
+GET    http://epd-dev.devicepros.net:8010/users/me/?format=json        67.487257ms
+GET    http://epd-dev.devicepros.net:8010/users/reset_password/?format=json        35.597933ms
+StatusCode: 400
+Error: nil
+Body: {"detail":"username not specified"}
+GET    http://epd-dev.devicepros.net:8010/v2/firmware_report/?format=json        47.987736ms

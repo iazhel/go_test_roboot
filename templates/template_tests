@@ -1,0 +1,115 @@
+
+func Test_{{.GoApiCallName}}(t *testing.T) {
+	// login
+	rest, err, _:= Login(TestUrl, "admin", "password")
+	if err != nil {
+		t.Log(LastHistory())
+		t.Fatal(err)
+	}
+
+	res, err, _:= rest.{{.GetMethod}}()
+	if err != nil {
+		t.Log(LastHistory())
+		t.Fatal("{{.GetMethod}}():", err)
+	}
+{{if not .FieldsNameMissed}}
+    // check count of elements
+	indexes := lastIndexes(len(res.{{.ExampleName}}), nOutput)
+    if  len(res.{{.ExampleName}}) == 0 {
+		t.Log(LastHistory())
+         t.Error("WARNING:", "Recieved empty structure by {{.ApiCall}}")
+	}
+    for i := range(indexes) {
+        r := &res.{{.ExampleName}}[i]
+        t.Log("#", i, "ID:", r.{{.IdField}}, "{{.PrimaryFieldName}}:", r.{{.PrimaryFieldName}})
+		}
+{{- else}}
+		t.Log("{{.ExampleName}}:",res.{{.ExampleName}})
+{{- end}}
+{{if not .GetOneRejected}}
+    // GET one
+    last := &{{.OneGetType}}{}
+	if n := len(res.{{.ExampleName}}) - 1; n >=0 {
+        last = &res.{{.ExampleName}}[n]
+    	idLast := last.{{.IdField}}
+        res, err, _:= rest.{{.GetOneMethod}}(idLast)
+    	if err != nil {
+		t.Log(LastHistory())
+			t.Fatal("NOT FOUND URL ID:", idLast, "{{.GetOneMethod}}(idLast)", err)
+        }
+		if last.{{.IdField}}!= res.{{.IdField}}{
+			t.Errorf("{{.GetOneMethod}}(%d),  Look %d, get %d {{.IdField}}", idLast, idLast, res.{{.IdField}})
+		}
+    } else {
+		t.Log(LastHistory())
+        t.Fatal("END: Can't possible to continue test wiith empty structure {{.OneGetType}}.")
+	}
+{{- end}}
+
+{{if not .PostRejected}}  // POST 
+    /* change data here
+	last.{{.PrimaryFieldName}} += "POSTed by method {{.PostMethod}} 13" //+ time.Now().String()[:20]
+    */ 
+    posted, err, _:= rest.{{.PostMethod}}(last)
+	if  err != nil {
+		t.Log(LastHistory())
+		t.Fatal("{{.PostMethod}}():", err)
+    }
+  
+{{if not .PatchRejected}}  // PATCH 
+
+   idPosted := posted.{{.IdField}}
+   if idPosted == 0 {
+        t.Log("{{.PostMethod}}() doesn't return object")
+
+		// Look records with posted Name
+		records, err, _ := rest.{{.GetMethod}}()
+		if err != nil {
+			t.Log(LastHistory())
+			t.Error("{{.GetMethod}}():", err)
+		}
+        for _, unit := range records.{{.ExampleName}} {
+            if strings.Contains(unit.{{.PrimaryFieldName}}, last.{{.PrimaryFieldName}}){
+                idPosted = unit.{{.IdField}}
+			}
+		}
+	}
+
+    // get posted data again
+	forPatch, err, _:= rest.{{.GetOneMethod}}(idPosted)
+    if err != nil {
+		t.Log(LastHistory())
+        t.Error("Error  {{.ApiCall}}%d/\n%s", idPosted, err)
+	}
+
+    /*
+	forPatch.{{.PrimaryFieldName}} = "PATCHed by method {{.PatchMethod}} " + time.Now().String()[:20]
+   */
+    // PATHC API
+    _, err, _= rest.{{.PatchMethod}}(idPosted, forPatch);
+    if  err != nil {
+		t.Log(LastHistory())
+        t.Error("{{.PatchMethod}}():", err)
+    }
+{{- end}}
+
+    // get patched again
+	pached, err, _:= rest.{{.GetOneMethod}}(idPosted)
+	if err != nil {
+		t.Log(LastHistory())
+        t.Error("Error  {{.ApiCall}}%d/\n%s", idPosted, err)
+	}
+    // compare pached fields 
+    if !strings.EqualFold(pached.{{.PrimaryFieldName}}, forPatch.{{.PrimaryFieldName}}) {
+        t.Errorf("Metod PATCH didn't change data.'%s' != '%s'", forPatch.{{.PrimaryFieldName}}, pached.{{.PrimaryFieldName}})
+	}
+
+	// DEL
+	if err, _ := rest.{{.DelMethod}}(idPosted); err != nil {
+		t.Log(LastHistory())
+		t.Error("{{.DelMethod}}():", (err))
+	}
+{{- end}}
+}
+
+
