@@ -67,7 +67,7 @@ func (self *RestApiClient) Put(apiCall string, data []byte) ([]byte, int, error,
 
 func (self *RestApiClient) GetHeaders(apiCall string) (http.Header, error, time.Duration) {
 	// read reaponse body
-	resp, err, d := self.doRequest(apiCall, "GET", []byte{}, []int{200})
+	resp, err, d := self.doRequest(apiCall, "GET", []byte{}, []int{200, 401})
 	if err != nil {
 		return nil, err, d
 	}
@@ -98,7 +98,7 @@ func (self *RestApiClient) GetAll(apiCall string) ([][]byte, error, time.Duratio
 		structWithNext := &typeWithNext{}
 		err = json.Unmarshal(body, structWithNext)
 		if err != nil {
-			fmt.Println("JSON: ERROR" )
+			fmt.Println("Check structure types!")
 			return allBodies, err, duration + d
 		}
 		// make next url
@@ -158,6 +158,7 @@ func (self *RestApiClient) doRequest(apiCall, action string, data []byte, expect
 
 	// print info
 	if printUrl {
+		defer fmt.Println()
 		fmt.Print("   ", (action + "         ")[:8], url)
 	}
 	if printCurlCommand {

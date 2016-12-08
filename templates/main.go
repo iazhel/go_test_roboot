@@ -1,4 +1,4 @@
-package main
+package templates
 
 import (
 	"fmt"
@@ -7,19 +7,79 @@ import (
 	"path"
 	"text/template"
 )
+type ApiParameters struct {
+	BaseUrl  string
+	Login string
+	Password string
+	PackageName string
+}
 
-func main() {
-	APIsBeginer := "beginner_APIs"
-	InputMethodsSource := "template_methods"
-	OuputMethodsSource := "methods/APIs.go"
+type GoApiEnvironment struct {
 
-	testsBeginer := "beginner_tests"
-	InputTestsSource := "template_tests"
-	OuputTestsSource := "methods/auto_test.go"
+	Error    string
+	HasError bool
+
+	IsComplex bool
+	Base      string
+
+	ApiCall         string // url value  "/test_cases/"
+	GoApiCallName   string
+	GetMethod       string
+	GetSimpleMethod string
+	GetOneMethod    string
+	PostMethod      string
+	PutMethod       string
+	DelMethod       string
+	OptMethod       string
+	PatchMethod     string
+	HeadMethod      string
+
+	WideType    string // Common type, is returned by GET all.
+	ExampleType string // Is included in WideType as slice element.
+	OneGetType  string // Uses If ExampleType != OneGetType.
+
+	ExampleName      string // Field name of slice in getted structure.
+	IdField          string
+	PrimaryFieldName string
+
+	CommonTest string
+
+	GetRejected       bool
+	GetSimpleRejected bool
+	GetOneRejected    bool
+	PostRejected      bool
+	DelRejected       bool
+	PatchRejected     bool
+	PutRejected       bool
+	HeadRejected      bool
+	OptionRejected    bool
+
+	FieldsNameMissed bool
+}
+
+var (
+	env        []GoApiEnvironment
+newPackage string
+//redential string
+)
+
+func Do(enviroument []GoApiEnvironment,p ApiParameters) {
+
+
+	newPackage = p.PackageName
+	env = enviroument
+	//	APIsBeginer := "/s/beginner_APIs"
+	APIsBeginer := "/home/illia/GoDev/src/templates/beginner_APIs"
+	InputMethodsSource := "/home/illia/GoDev/src/templates/template_methods"
+	OuputMethodsSource := newPackage + "/methods_" + newPackage + ".go"
+
+	testsBeginer := "/home/illia/GoDev/src/templates/beginner_tests"
+	InputTestsSource := "/home/illia/GoDev/src/templates/template_tests"
+	OuputTestsSource := newPackage + "/" + newPackage + "_test.go"
 
 	for i, api := range env {
 
-		// check field names
+		//		check field names
 		if len(api.IdField) == 0 || len(api.PrimaryFieldName) == 0 {
 			env[i].FieldsNameMissed = true
 		}
@@ -55,11 +115,19 @@ func main() {
 
 	}
 
-	_ = process(APIsBeginer, InputMethodsSource, OuputMethodsSource, 2)
-	_ = process(testsBeginer, InputTestsSource, OuputTestsSource, 0)
+	consts := `
+import (
+	"testing"
+	"access_api"
+)
+	`
+	consts += fmt.Sprintf("\nconst BaseUrl = \"%s\"\nconst login = \"%s\"\nconst password = \"%s\"\n",p.BaseUrl,p.Login, p.Password)
+
+	_ = process(APIsBeginer, InputMethodsSource, OuputMethodsSource, "")
+	_ = process(testsBeginer, InputTestsSource, OuputTestsSource, consts)
 }
 
-func process(Beginner, InputMethodsSource, Ouput string, n int) (err error) {
+func process(Beginner, InputMethodsSource, Ouput string, consts string) (err error) {
 	// create methods dir
 	dir, _ := path.Split(Ouput)
 	err = os.MkdirAll(dir, os.ModePerm)
@@ -71,7 +139,7 @@ func process(Beginner, InputMethodsSource, Ouput string, n int) (err error) {
 	// read methods template
 	b, err := ioutil.ReadFile(InputMethodsSource)
 	if err != nil {
-		fmt.Println("Failed to read template source", InputMethodsSource)
+		fmt.Println("Failed to read template source", InputMethodsSource, err)
 		return
 	}
 	InputSourceStr := string(b)
@@ -96,18 +164,15 @@ func process(Beginner, InputMethodsSource, Ouput string, n int) (err error) {
 		return
 	}
 
-	// write beginer
-	_, err = f.WriteString(string(b))
+	_, err = f.WriteString("package " + newPackage + consts)
 	if err != nil {
 		fmt.Println("Failed to WriteString", err)
 		return
 	}
+	_, err = f.WriteString(string(b))
 	fmt.Println("WRITED:", Ouput)
 	// process and write template
-	for i, task := range env {
-		if i == n {
-			break
-		}
+	for _, task := range env {
 		err = templ.Execute(f, task)
 		if err != nil {
 			fmt.Println("Failed to execute template!", err)

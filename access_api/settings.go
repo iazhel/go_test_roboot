@@ -10,7 +10,7 @@ var (
 	// Prints every api call duration.
 	printDurations bool = false
 	// Pints api call url during execution.
-	printUrl bool = false
+	printUrl bool = true
 	// Will print curl commands, if test fail.
 	printCurlCommand bool = false
 )

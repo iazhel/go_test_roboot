@@ -1,4 +1,5 @@
 // API GET all {{.ApiCall}}  
+{{if not .HasError}}
 {{if not .GetRejected}}
 func (self *RestApiClient) {{.GetMethod}}()(*{{.WideType}}, error, time.Duration){
     out := &{{.WideType}}{}
@@ -16,6 +17,21 @@ func (self *RestApiClient) {{.GetMethod}}()(*{{.WideType}}, error, time.Duration
         out.{{.ExampleName}} = append(out.{{.ExampleName}}, gotSt.{{.ExampleName}}...)
     }
 	return out, nil, d
+}
+{{- end}}
+{{if not .GetSimpleRejected}}
+// API GET one {{.ApiCall}}  
+func (self *RestApiClient) {{.GetMethod}}() (*{{.WideType}}, error,  time.Duration){
+	gotSt := &{{.WideType}}{}
+	body, err, d := self.Get({{.GoApiCallName}} + "/?format=json")
+	if err != nil {
+		return gotSt, err, d
+	}
+	err = json.Unmarshal(body, gotSt)
+	if err != nil {
+		return gotSt, err, d
+	}
+	return gotSt, nil, d
 }
 {{- end}}
 {{if not .GetOneRejected}}
@@ -123,11 +139,12 @@ func (self *RestApiClient) {{.OptMethod}}() ([]byte, error,  time.Duration){
 {{if not .DelRejected}}
 // API DELETE {{.ApiCall}}
 func (self *RestApiClient) {{.DelMethod}}(id int) (error, time.Duration){
-	err, d := self.doDelRequest({{.GoApiCallName}} + fmt.Sprintf("%d/", id))
+	err, d := self.Del({{.GoApiCallName}} + fmt.Sprintf("%d/", id))
 	if err != nil {
 		return err, d
 	}
 	return nil, d
 }
+{{- end}}
 {{- end}}
 

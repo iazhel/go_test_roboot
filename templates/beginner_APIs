@@ -1,4 +1,3 @@
-package methods
 
 import (
 	"access_api"

@@ -1,22 +1,23 @@
-
+{{if not .HasError}}
 func Test_{{.GoApiCallName}}(t *testing.T) {
 	// login
-	rest, err, _:= Login(TestUrl, "admin", "password")
+	rest, err, _:= Login(BaseUrl, login, password)
 	if err != nil {
-		t.Log(LastHistory())
+		t.Log(access_api.LastHistory())
 		t.Fatal(err)
 	}
 
-	res, err, _:= rest.{{.GetMethod}}()
+	res, err, _:= rest.{{.CommonTest}}()
 	if err != nil {
-		t.Log(LastHistory())
-		t.Fatal("{{.GetMethod}}():", err)
+		t.Log(access_api.LastHistory())
+		t.Fatal("{{.CommonTest}}():", err)
 	}
+
 {{if not .FieldsNameMissed}}
     // check count of elements
 	indexes := lastIndexes(len(res.{{.ExampleName}}), nOutput)
     if  len(res.{{.ExampleName}}) == 0 {
-		t.Log(LastHistory())
+		t.Log(access_api.LastHistory())
          t.Error("WARNING:", "Recieved empty structure by {{.ApiCall}}")
 	}
     for i := range(indexes) {
@@ -24,8 +25,9 @@ func Test_{{.GoApiCallName}}(t *testing.T) {
         t.Log("#", i, "ID:", r.{{.IdField}}, "{{.PrimaryFieldName}}:", r.{{.PrimaryFieldName}})
 		}
 {{- else}}
-		t.Log("{{.ExampleName}}:",res.{{.ExampleName}})
+		t.Log("{{.ExampleName}}:",res/*.{{.ExampleName}}*/)
 {{- end}}
+{{if not .FieldsNameMissed}}
 {{if not .GetOneRejected}}
     // GET one
     last := &{{.OneGetType}}{}
@@ -34,14 +36,14 @@ func Test_{{.GoApiCallName}}(t *testing.T) {
     	idLast := last.{{.IdField}}
         res, err, _:= rest.{{.GetOneMethod}}(idLast)
     	if err != nil {
-		t.Log(LastHistory())
+		t.Log(access_api.LastHistory())
 			t.Fatal("NOT FOUND URL ID:", idLast, "{{.GetOneMethod}}(idLast)", err)
         }
 		if last.{{.IdField}}!= res.{{.IdField}}{
 			t.Errorf("{{.GetOneMethod}}(%d),  Look %d, get %d {{.IdField}}", idLast, idLast, res.{{.IdField}})
 		}
     } else {
-		t.Log(LastHistory())
+		t.Log(access_api.LastHistory())
         t.Fatal("END: Can't possible to continue test wiith empty structure {{.OneGetType}}.")
 	}
 {{- end}}
@@ -52,7 +54,7 @@ func Test_{{.GoApiCallName}}(t *testing.T) {
     */ 
     posted, err, _:= rest.{{.PostMethod}}(last)
 	if  err != nil {
-		t.Log(LastHistory())
+		t.Log(access_api.LastHistory())
 		t.Fatal("{{.PostMethod}}():", err)
     }
   
@@ -65,7 +67,7 @@ func Test_{{.GoApiCallName}}(t *testing.T) {
 		// Look records with posted Name
 		records, err, _ := rest.{{.GetMethod}}()
 		if err != nil {
-			t.Log(LastHistory())
+			t.Log(access_api.LastHistory())
 			t.Error("{{.GetMethod}}():", err)
 		}
         for _, unit := range records.{{.ExampleName}} {
@@ -78,7 +80,7 @@ func Test_{{.GoApiCallName}}(t *testing.T) {
     // get posted data again
 	forPatch, err, _:= rest.{{.GetOneMethod}}(idPosted)
     if err != nil {
-		t.Log(LastHistory())
+		t.Log(access_api.LastHistory())
         t.Error("Error  {{.ApiCall}}%d/\n%s", idPosted, err)
 	}
 
@@ -88,7 +90,7 @@ func Test_{{.GoApiCallName}}(t *testing.T) {
     // PATHC API
     _, err, _= rest.{{.PatchMethod}}(idPosted, forPatch);
     if  err != nil {
-		t.Log(LastHistory())
+		t.Log(access_api.LastHistory())
         t.Error("{{.PatchMethod}}():", err)
     }
 {{- end}}
@@ -96,7 +98,7 @@ func Test_{{.GoApiCallName}}(t *testing.T) {
     // get patched again
 	pached, err, _:= rest.{{.GetOneMethod}}(idPosted)
 	if err != nil {
-		t.Log(LastHistory())
+		t.Log(access_api.LastHistory())
         t.Error("Error  {{.ApiCall}}%d/\n%s", idPosted, err)
 	}
     // compare pached fields 
@@ -106,10 +108,12 @@ func Test_{{.GoApiCallName}}(t *testing.T) {
 
 	// DEL
 	if err, _ := rest.{{.DelMethod}}(idPosted); err != nil {
-		t.Log(LastHistory())
+		t.Log(access_api.LastHistory())
 		t.Error("{{.DelMethod}}():", (err))
 	}
 {{- end}}
+{{- end}}
 }
+{{- end}}
 
 
